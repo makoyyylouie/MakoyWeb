@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mark Pesuelo's personal portfolio - Computer Science student and racing enthusiast">
+    <title>Makoy | Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff0000;
+            --primary-dark: #cc0000;
+            --secondary: #ffcc00;
+            --dark: #333;
+            --light: #fff;
+            --bg: #f5f5f5;
+            --shadow-sm: 0 4px 8px rgba(0,0,0,0.1);
+            --shadow-md: 0 5px 15px rgba(0,0,0,0.05);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+            --radius: 10px;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: inherit; transition: all 0.3s; }
+        
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('images/McQueen.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.50;
+            z-index: -1;
+        }
+        
+        header {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.9) 0%, rgba(153, 0, 0, 0.9) 100%);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 0 2rem;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .profile-img:hover { transform: scale(1.05); }
+        
+        header h1 {
+            font-family: 'Racing Sans One', cursive;
+            font-size: 2.75rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--secondary);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: race 2s ease-in-out infinite;
+        }
+        
+        .checkered-flag {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background-image: repeating-linear-gradient(90deg, #000 0, #000 20px, #fff 20px, #fff 40px);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 3rem auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .section {
+            background: white;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s, transform 0.8s, box-shadow 0.3s;
+            width: 100%;
+        }
+        
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .section-header {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.25rem;
+            font-family: 'Racing Sans One', cursive;
+            position: relative;
+            text-align: center;
+        }
+        
+        .section-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-image: repeating-linear-gradient(90deg, #000 0, #000 10px, #fff 10px, #fff 20px);
+        }
+        
+        .section-content { padding: 1.75rem; }
+        
+        #about .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+        
+        #about p:first-of-type {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+        
+        .education-item {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+        }
+        
+        .education-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .education-info { width: 100%; }
+        
+        .education-item h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .education-item .years {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.75rem;
+        }
+        
+        .education-item img {
+            width: 80%;
+            max-width: 400px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s;
+        }
+        
+        .education-item img:hover { transform: scale(1.02); }
+        
+        /* Family Photo Gallery Styles */
+        .family-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .family-photo {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+        
+        .family-photo:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .family-photo img {
+            width: 100%;
+            border-radius: var(--radius);
+            transition: transform 0.5s ease;
+        }
+        
+        .family-photo:hover img {
+            transform: scale(1.05);
+        }
+        
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .family-photo:hover .photo-caption {
+            transform: translateY(0);
+        }
+        
+        .family-intro {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .family-intro p {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .social-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-width: 120px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .social-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: -1;
+        }
+        
+        .social-button:hover::before { transform: translateX(0); }
+        .social-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        
+        .social-button.facebook { background: linear-gradient(90deg, #3b5998 0%, #4c70ba 100%); }
+        .social-button.twitter { background: linear-gradient(90deg, #1da1f2 0%, #5ab9f5 100%); }
+        .social-button.tiktok { background: linear-gradient(90deg, #000 0%, #25f4ee 50%, #fe2c55 100%); }
+        .social-button.instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        
+        .contact-info {
+            text-align: center;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+        }
+        
+        .skills, .hobbies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+        
+        .skill, .hobby {
+            padding: 0.75rem 1.25rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .skill {
+            background-color: rgba(255, 0, 0, 0.08);
+            border-color: rgba(255, 0, 0, 0.2);
+        }
+        
+        .hobby {
+            background-color: rgba(255, 204, 0, 0.1);
+            border-color: rgba(255, 204, 0, 0.2);
+        }
+        
+        .skill:hover {
+            background-color: rgba(255, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .hobby:hover {
+            background-color: rgba(255, 204, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .favorite-quotes p {
+            font-style: italic;
+            margin-bottom: 1.25rem;
+            border-left: 3px solid var(--primary);
+            padding: 0.75rem 1rem;
+            background-color: rgba(255, 0, 0, 0.03);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            transition: transform 0.3s, background-color 0.3s;
+            text-align: left;
+        }
+        
+        .favorite-quotes p:hover {
+            transform: translateX(5px);
+            background-color: rgba(255, 0, 0, 0.06);
+        }
+        
+        .favorite-quotes p:last-child { margin-bottom: 0; }
+        
+        footer {
+            text-align: center;
+            padding: 2.5rem 0;
+            background-color: var(--dark);
+            color: white;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s, transform 0.8s;
+            width: 100%;
+        }
+        
+        footer.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        footer p { margin-bottom: 1rem; }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: none;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        @keyframes race {
+            0% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            100% { transform: translateX(-5px); }
+        }
+        
+        @media (max-width: 768px) {
+            .container { width: 95%; margin: 2rem auto; }
+            header h1 { font-size: 2.2rem; }
+            .tagline { font-size: 1.2rem; }
+            .section-header { padding: 1rem; }
+            .section-content { padding: 1.25rem; }
+            .education-item img { width: 100%; }
+            .profile-img { width: 120px; height: 120px; }
+            .social-button {
+                min-width: auto;
+                width: calc(50% - 0.5rem);
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                bottom: 20px;
+                right: 20px;
+            }
+            .family-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay" aria-hidden="true"></div>
+    
+    <!-- Back to Top Button -->
+    <button class="back-to-top" aria-label="Back to top">↑</button>
+    
+    <header>
+        <div class="profile">
+            <img src="images/Makoy2.jpg" alt="Mark Louie A. Pesuelo" class="profile-img">
+            <h1>Mark Louie A. Pesuelo</h1>
+            <p class="tagline">Kachowwww!!!</p>
+        </div>
+        <div class="checkered-flag" aria-hidden="true"></div>
+    </header>
+    
+    <div class="container">
+        <section class="section" id="about">
+            <div class="section-header"><h2>About Me</h2></div>
+            <div class="section-content">
+                <p>Hi! I'm Mark Louie A. Pesuelo, a normal student who loves racing!</p>
+                <p>I am currently pursuing a degree in Computer Engineering at University of Rizal Morong Campus, where I am honing my skills in programming and software development. My academic journey has equipped me with knowledge in various programming languages and development methodologies.</p>
+                <p>My passion for racing started at a young age, and I enjoy watching and participating in various racing events. The Cars movie franchise has been a significant influence on my interests, with Lightning McQueen being my favorite character. This enthusiasm for speed and precision influences my approach to coding and problem-solving.</p>
+            </div>
+        </section>
+        
+        <!-- NEW SECTION: Family Pictures -->
+        <section class="section" id="family">
+            <div class="section-header"><h2>My Family</h2></div>
+            <div class="section-content">
+                <div class="family-intro">
+                    <p>Family means everything to me. Here are some special moments with the people who have supported me throughout my journey.</p>
+                </div>
+                <div class="family-gallery">
+                    <div class="family-photo">
+                        <img src="images/fam1.jpg" alt="Family gathering" loading="lazy">
+                        <div class="photo-caption">
+                            <p>All Saints' Day</p>
+                        </div>
+                    </div>
+                    <div class="family-photo">
+                        <img src="images/fam2.jpg" alt="Family vacation" loading="lazy">
+                        <div class="photo-caption">
+                            <p>Celebrating my Birthday</p>
+                        </div>
+                    </div>
+                    <div class="family-photo">
+                        <img src="images/fam3.jpg" alt="Family celebration" loading="lazy">
+                        <div class="photo-caption">
+                            <p>Regina Rica's Church</p>
+                        </div>
+                    </div>
+                    <div class="family-photo">
+                        <img src="images/fam4.jpg" alt="Family dinner" loading="lazy">
+                        <div class="photo-caption">
+                            <p>CUTE LANG!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="education">
+            <div class="section-header"><h2>Education</h2></div>
+            <div class="section-content">
+                <div class="education-item">
+                    <div class="education-info">
+                        <h3>University of Rizal</h3>
+                        <div class="years">2023 - Present</div>
+                        <p>Bachelor of Science in Computer Engineering</p>
+                        <p>Currently focusing on advanced programming concepts, machine learning fundamentals, and software engineering principles.</p>
+                    </div>
+                    <img src="images/Makoy.jpg" alt="XYZ University campus" loading="lazy">
+                </div>
+                <div class="education-item">
+                    <div class="education-info">
+                        <h3>Angono National High School</h3>
+                        <div class="years">2017 - 2023</div>
+                        <p>Graduated with honors</p>
+                        <p>Active member of the Computer Club and participated in several programming competitions.</p>
+                    </div>
+                    <img src="images/HS.jpg" alt="ABC High School campus" loading="lazy">
+                </div>
+                <div class="education-item">
+                    <div class="education-info">
+                        <h3>Zion Hills Christian School of Binangonan Inc.</h3>
+                        <div class="years">2011 - 2017</div>
+                        <p>Completed elementary education</p>
+                        <p>Graduated with Loyalty Award</p>
+                        <p>Developed early interest in computers and technology.</p>
+                    </div>
+                    <img src="images/ELEM.jpg" alt="DEF Elementary School building" loading="lazy">
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="skills">
+            <div class="section-header"><h2>My Skills</h2></div>
+            <div class="section-content">
+                <div class="skills">
+                    <span class="skill">Maging Loyal</span>
+                    <span class="skill">Maging Faithful</span>
+                    <span class="skill">Magkalikot</span>
+                    <span class="skill">Machine Learning</span>
+                    <span class="skill">Game Development</span>
+                    <span class="skill">Problem Solving</span>
+                    <span class="skill">Web Development</span>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="hobbies">
+            <div class="section-header"><h2>My Hobbies</h2></div>
+            <div class="section-content">
+                <div class="hobbies">
+                    <span class="hobby">Playing Billiards</span>
+                    <span class="hobby">Watching Cars movies</span>
+                    <span class="hobby">Playing video games</span>
+                    <span class="hobby">Outdoor activities</span>
+                    <span class="hobby">Programming</span>
+                    <span class="hobby">Racing simulations</span>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="quotes">
+            <div class="section-header"><h2>Favorite Quotes</h2></div>
+            <div class="section-content">
+                <div class="favorite-quotes">
+                    <p>"Life is not a race, and I'm just trying to keep up!"</p>
+                    <p>"The only limit to our realization of tomorrow will be our doubts of today." - Franklin D. Roosevelt</p>
+                    <p>"Speed. I am speed." - Lightning McQueen</p>
+                    <p>"If you don't go after what you want, you'll never have it." - Anonymous</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="connect">
+            <div class="section-header"><h2>Connect with Me</h2></div>
+            <div class="section-content">
+                <div class="social-buttons">
+                    <a href="https://www.facebook.com/mark.pesuelo.3" target="_blank" rel="noopener noreferrer" class="social-button facebook">Facebook</a>
+                    <a href="https://x.com/MarkPesuelo?t=btRKN4G61NXGKsdVI8isdw&s=09" target="_blank" rel="noopener noreferrer" class="social-button twitter">Twitter</a>
+                    <a href="https://www.tiktok.com/@markpesuelo" target="_blank" rel="noopener noreferrer" class="social-button tiktok">TikTok</a>
+                    <a href="https://www.instagram.com/mark_pesuelo/" target="_blank" rel="noopener noreferrer" class="social-button instagram">Instagram</a>
+                </div>
+                <div class="contact-info">
+                    <p><strong>Email:</strong> <a href="mailto:makoypesuelo38@gmail.com">makoypesuelo38@gmail.com</a></p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer id="footer">
+        <p>&copy; 2025 Makoy Pogi | Kachowwww!</p>
+        <p>Made with ❤️ and <span style="color: var(--secondary);">SPEED</span></p>
+        <div class="checkered-flag" aria-hidden="true"></div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    document.querySelector(targetId)?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            });
+            
+            // Scroll animation for sections
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            
+            // Observe all sections and footer
+            document.querySelectorAll('.section, footer').forEach(section => observer.observe(section));
+            
+            // Activate first section immediately
+            document.querySelector('.section')?.classList.add('active');
+            
+            // Back to Top Button functionality
+            const backToTopButton = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
